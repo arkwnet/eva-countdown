@@ -15,32 +15,32 @@ const resetButton = document.getElementById("reset-button");
 const setupButton = document.getElementById("setup-button");
 
 const updateTimeText = (time) => {
-    const totalSeconds = Math.floor(time / 1000);
-    const h = Math.floor(totalSeconds / 3600) % 1000;
-    const m = Math.floor((totalSeconds % 3600) / 60);
-    const s = totalSeconds % 60;
-    const ms = time % 1000;
+  const totalSeconds = Math.floor(time / 1000);
+  const h = Math.floor(totalSeconds / 3600) % 1000;
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  const ms = time % 1000;
 
-    const formattedH = `0${h}`.slice(-3);
-    const formattedM = `0${m}`.slice(-2);
-    const formattedS = `0${s}`.slice(-2);
-    const formattedMs = `00${ms}`.slice(-3).slice(0, 2);
+  const formattedH = `0${h}`.slice(-3);
+  const formattedM = `0${m}`.slice(-2);
+  const formattedS = `0${s}`.slice(-2);
+  const formattedMs = `00${ms}`.slice(-3).slice(0, 2);
 
-    setTimer(formattedH, formattedM, formattedS, formattedMs);
+  setTimer(formattedH, formattedM, formattedS, formattedMs);
 };
 
 const getTargetDate = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const daytime = urlParams.get("daytime");
-    if (!daytime || daytime.length !== 12) return null;
+  const urlParams = new URLSearchParams(window.location.search);
+  const daytime = urlParams.get("daytime");
+  if (!daytime || daytime.length !== 12) return null;
 
-    const year = parseInt(daytime.substring(0, 4));
-    const month = parseInt(daytime.substring(4, 6)) - 1;
-    const day = parseInt(daytime.substring(6, 8));
-    const hour = parseInt(daytime.substring(8, 10));
-    const minute = parseInt(daytime.substring(10, 12));
+  const year = parseInt(daytime.substring(0, 4));
+  const month = parseInt(daytime.substring(4, 6)) - 1;
+  const day = parseInt(daytime.substring(6, 8));
+  const hour = parseInt(daytime.substring(8, 10));
+  const minute = parseInt(daytime.substring(10, 12));
 
-    return new Date(year, month, day, hour, minute);
+  return new Date(year, month, day, hour, minute);
 };
 
 const setTimer = (h, m, s, ms) => {
@@ -51,18 +51,18 @@ const setTimer = (h, m, s, ms) => {
 };
 
 const update = () => {
-    timerId = setTimeout(() => {
-        const now = Date.now();
-        remainingTime = targetDate.getTime() - now;
+  timerId = setTimeout(() => {
+    const now = Date.now();
+    remainingTime = targetDate.getTime() - now;
 
-        if (remainingTime > 0) {
-            updateTimeText(remainingTime);
-            update();
-        } else {
-            remainingTime = 0;
-            updateTimeText(remainingTime);
-        }
-    }, 10);
+    if (remainingTime > 0) {
+      updateTimeText(remainingTime);
+      update();
+    } else {
+      remainingTime = 0;
+      updateTimeText(remainingTime);
+    }
+  }, 10);
 };
 
 const internalAction = () => {
@@ -82,24 +82,24 @@ const externalAction = () => {
 };
 
 const startAction = () => {
-    if (timerId !== null || !targetDate) return;
-    update();
-    startButton.classList.remove("active-control");
-    stopButton.classList.add("active-control");
+  if (timerId !== null || !targetDate) return;
+  update();
+  startButton.classList.remove("active-control");
+  stopButton.classList.add("active-control");
 };
 
 const stopAction = () => {
-    if (timerId === null) return;
-    clearTimeout(timerId);
-    timerId = null;
-    stopButton.classList.remove("active-control");
-    startButton.classList.add("active-control");
+  if (timerId === null) return;
+  clearTimeout(timerId);
+  timerId = null;
+  stopButton.classList.remove("active-control");
+  startButton.classList.add("active-control");
 };
 
 const resetAction = () => {
-    if (!targetDate) return;
-    remainingTime = targetDate.getTime() - Date.now();
-    updateTimeText(remainingTime);
+  if (!targetDate) return;
+  remainingTime = targetDate.getTime() - Date.now();
+  updateTimeText(remainingTime);
 };
 
 const setupAction = () => {
@@ -112,18 +112,17 @@ const setupAction = () => {
 };
 
 (() => {
-    startButton.addEventListener("click", startAction);
-    stopButton.addEventListener("click", stopAction);
-    resetButton.addEventListener("click", resetAction);
+  startButton.addEventListener("click", startAction);
+  stopButton.addEventListener("click", stopAction);
+  resetButton.addEventListener("click", resetAction);
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const titlevalue = urlParams.get("title");
-    document.getElementById("title").textContent = titlevalue;
+  const urlParams = new URLSearchParams(window.location.search);
+  const titlevalue = urlParams.get("title");
+  document.getElementById("title").textContent = titlevalue;
 
-
-    targetDate = getTargetDate();
-    if (targetDate) {
-        resetAction();
-        startAction();
-    }
+  targetDate = getTargetDate();
+  if (targetDate) {
+    resetAction();
+    startAction();
+  }
 })();
