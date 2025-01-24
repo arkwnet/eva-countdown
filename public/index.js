@@ -13,6 +13,9 @@ const startButton = document.getElementById("start-button");
 const stopButton = document.getElementById("stop-button");
 const resetButton = document.getElementById("reset-button");
 const setupButton = document.getElementById("setup-button");
+const canvas = document.getElementById("canvas");
+const context = canvas.getContext("2d");
+let backgroundImage;
 
 const updateTimeText = (time) => {
   const totalSeconds = Math.floor(time / 1000);
@@ -111,14 +114,24 @@ const setupAction = () => {
   resetAction();
 };
 
-(() => {
-  startButton.addEventListener("click", startAction);
+const loadImage = (src) =>
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = (event) => reject(event);
+    image.src = src;
+  });
+
+(async () => {
   stopButton.addEventListener("click", stopAction);
   resetButton.addEventListener("click", resetAction);
 
   const urlParams = new URLSearchParams(window.location.search);
   const titlevalue = urlParams.get("title");
   document.getElementById("title").textContent = titlevalue;
+
+  backgroundImage = await loadImage("./img/background.png");
+  context.drawImage(backgroundImage, 0, 0);
 
   targetDate = getTargetDate();
   if (targetDate) {
