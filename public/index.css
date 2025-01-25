@@ -2,8 +2,9 @@
 @font-face {
   font-family: "7segment";
   font-style: normal;
-  src: local("7segment"), url("./fonts/7segment.woff") format("woff"),
-    url("./fonts/7segment.ttf") format("truetype");
+  src: local("7segment"), url("./fonts/7barP.woff") format("woff"),
+    url("./fonts/7barP.woff2") format("woff2"),
+    url("./fonts/7barP.ttf") format("truetype");
 }
 
 body {

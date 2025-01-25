@@ -21,17 +21,19 @@ let mediumImage = new Array();
 
 const updateTimeText = (time) => {
   const totalSeconds = Math.floor(time / 1000);
-  const h = Math.floor(totalSeconds / 3600) % 1000;
+  const d = Math.floor(totalSeconds / (3600 * 24));
+  const h = Math.floor(totalSeconds / 3600) % 24;
   const m = Math.floor((totalSeconds % 3600) / 60);
   const s = totalSeconds % 60;
   const ms = time % 1000;
 
-  const formattedH = `0${h}`.slice(-3);
+  const formattedD = `0${d}`.slice(-3);
+  const formattedH = `0${h}`.slice(-2);
   const formattedM = `0${m}`.slice(-2);
   const formattedS = `0${s}`.slice(-2);
   const formattedMs = `00${ms}`.slice(-3).slice(0, 2);
 
-  setTimer(formattedH, formattedM, formattedS, formattedMs);
+  setTimer(formattedD, formattedH, formattedM, formattedS, formattedMs);
 };
 
 const getTargetDate = () => {
@@ -48,12 +50,19 @@ const getTargetDate = () => {
   return new Date(year, month, day, hour, minute);
 };
 
-const setTimer = (h, m, s, ms) => {
+const setTimer = (d, h, m, s, ms) => {
   document.getElementById("hour").textContent = h;
   document.getElementById("minute").textContent = m;
   document.getElementById("second").textContent = s;
   document.getElementById("millisecond").textContent = ms;
   context.drawImage(backgroundImage, 0, 0);
+  context.font = "140px '7segment'";
+  context.fillStyle = "#f0c400";
+  context.fillText(parseInt(d / 100), 270, 300);
+  context.fillText(parseInt(d / 10), 335, 300);
+  context.fillText(d % 10, 400, 300);
+  context.fillText(parseInt(h / 10), 530, 300);
+  context.fillText(h % 10, 591, 300);
   context.drawImage(largeImage[parseInt(m / 10)], 274, 316);
   context.drawImage(largeImage[m % 10], 391, 316);
   context.drawImage(largeImage[parseInt(s / 10)], 538, 316);
