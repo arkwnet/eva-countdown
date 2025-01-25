@@ -16,6 +16,8 @@ const setupButton = document.getElementById("setup-button");
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 let backgroundImage;
+let largeImage = new Array();
+let mediumImage = new Array();
 
 const updateTimeText = (time) => {
   const totalSeconds = Math.floor(time / 1000);
@@ -51,6 +53,13 @@ const setTimer = (h, m, s, ms) => {
   document.getElementById("minute").textContent = m;
   document.getElementById("second").textContent = s;
   document.getElementById("millisecond").textContent = ms;
+  context.drawImage(backgroundImage, 0, 0);
+  context.drawImage(largeImage[parseInt(m / 10)], 274, 316);
+  context.drawImage(largeImage[m % 10], 391, 316);
+  context.drawImage(largeImage[parseInt(s / 10)], 538, 316);
+  context.drawImage(largeImage[s % 10], 655, 316);
+  context.drawImage(mediumImage[parseInt(ms / 10)], 790, 381);
+  context.drawImage(mediumImage[ms % 10], 878, 381);
 };
 
 const update = () => {
@@ -131,7 +140,10 @@ const loadImage = (src) =>
   document.getElementById("title").textContent = titlevalue;
 
   backgroundImage = await loadImage("./img/background.png");
-  context.drawImage(backgroundImage, 0, 0);
+  for (let i = 0; i < 10; i++) {
+    largeImage.push(await loadImage("./img/large/" + i + ".png"));
+    mediumImage.push(await loadImage("./img/medium/" + i + ".png"));
+  }
 
   targetDate = getTargetDate();
   if (targetDate) {
